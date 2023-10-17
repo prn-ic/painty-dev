@@ -4,7 +4,6 @@ using Authentication.BusinessLayer.Models;
 using Authentication.DomainLayer.Contracts;
 using Authentication.DomainLayer.Dtos;
 using Authentication.DomainLayer.Entities;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 
 namespace Authentication.BusinessLayer.Services
