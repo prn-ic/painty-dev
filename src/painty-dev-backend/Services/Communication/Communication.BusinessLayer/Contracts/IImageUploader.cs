@@ -1,9 +1,9 @@
-﻿using Microsoft.Extensions.FileProviders;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace Communication.BusinessLayer.Contracts
 {
     public interface IImageUploader
     {
-        Task Upload(IFileInfo fileInfo);
+        bool Upload(IFormFile fileInfo, string path, string filename);
     }
 }
