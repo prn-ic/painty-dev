@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\Libs\Cryptography\Cryptography.csproj" />
+  </ItemGroup>
+
 </Project>

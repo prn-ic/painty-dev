@@ -11,11 +11,13 @@ namespace Authentication.BusinessLayer.Services
     public class AuthenticationService : IAuthenticationService
     {
         private readonly IUserService _userService;
+        private readonly IUserRoleService _userRoleService;
         private readonly IJwtService _jwtService;
 
-        public AuthenticationService(IUserService userService, IJwtService jwtService)
+        public AuthenticationService(IUserService userService, IJwtService jwtService, IUserRoleService userRoleService)
         {
             _userService = userService;
+            _userRoleService = userRoleService;
             _jwtService = jwtService;
         }
         public async Task<TokenModel> RefreshAsync(string token)
@@ -24,7 +26,7 @@ namespace Authentication.BusinessLayer.Services
             if (principal is null)
                 throw new InvalidTokenException<User>();
 
-            User? user= await _userService.GetByNameAsync(
+            User? user = await _userService.GetByNameAsync(
                 principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)!.Value);
 
             return _jwtService.CreateTokenPair(user!);
@@ -52,8 +54,9 @@ namespace Authentication.BusinessLayer.Services
             if (await _userService.GetByNameAsync(userDto.Name) is not null)
                 throw new ConflictException<User>();
 
-            User user = new User(userDto.Name, userDto.Password);
-            await _userService.CreateAsync(new User(userDto.Name, userDto.Password));
+            UserRole? role = await _userRoleService.GetByNameAsync("user");
+            User user = new User(userDto.Name, userDto.Password, role!);
+            await _userService.CreateAsync(user);
 
             // Generate a confirmation token 
             return _jwtService.CreateTokenPair(user);

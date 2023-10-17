@@ -31,14 +31,14 @@ namespace Authentication.BusinessLayer.Services
         }
 
         public async Task<ICollection<T>> GetAsync() => await _context.Set<T>().ToListAsync();
-        public async Task<T> GetAsync(Guid id) => await GetAsync(x => x.Id == id);
+        public virtual async Task<T?> GetAsync(Guid id) => await GetAsync(x => x.Id == id);
 
-        public async Task<T> GetAsync(Expression<Func<T, bool>> expression)
+        public async Task<T?> GetAsync(Expression<Func<T, bool>> expression,
+            params Expression<Func<T, object>>[] includeList)
         {
-            T? entityExist = await _context.Set<T>().FirstOrDefaultAsync(expression);
-            if (entityExist is null)
-                throw new InvalidDataException("The entity doesn't exist");
-
+            IQueryable<T> query = _context.Set<T>().AsQueryable();
+            foreach (var include in includeList) query = query.Include(include);
+            T? entityExist = await query.FirstOrDefaultAsync(expression);
             return entityExist;
         }
 
