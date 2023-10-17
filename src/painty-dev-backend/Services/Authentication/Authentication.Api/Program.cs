@@ -1,3 +1,4 @@
+using Authentication.Api.Middlewares;
 using Authentication.BusinessLayer.Contracts;
 using Authentication.BusinessLayer.Data;
 using Authentication.BusinessLayer.Services;
@@ -57,6 +58,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 
 app.MapControllers();
 

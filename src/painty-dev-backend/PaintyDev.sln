@@ -13,6 +13,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomResponseLib", "Libs\C
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Api", "Services\Authentication\Authentication.Api\Authentication.Api.csproj", "{7DEE08E8-E0CA-475C-850B-99A4C5C1E52C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{883874F2-218C-4B89-A834-61AF07E904C5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Authentication", "Authentication", "{D056C406-FD4B-448A-9FE4-5F93C2EA7A11}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libs", "Libs", "{43E948E0-59BE-4F1F-92A0-0A94F844FE62}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +48,14 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{03A0CD2D-4C22-4B7C-955A-16EA78DA017A} = {D056C406-FD4B-448A-9FE4-5F93C2EA7A11}
+		{C06654CC-3874-4A02-AB0B-C760F5A229D5} = {43E948E0-59BE-4F1F-92A0-0A94F844FE62}
+		{5848F94B-13A3-4E39-AD4A-6F4EC8C7CEEE} = {D056C406-FD4B-448A-9FE4-5F93C2EA7A11}
+		{0E865C12-8C3B-4813-83DC-50FEE7B6BAFE} = {43E948E0-59BE-4F1F-92A0-0A94F844FE62}
+		{7DEE08E8-E0CA-475C-850B-99A4C5C1E52C} = {D056C406-FD4B-448A-9FE4-5F93C2EA7A11}
+		{D056C406-FD4B-448A-9FE4-5F93C2EA7A11} = {883874F2-218C-4B89-A834-61AF07E904C5}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {C86ACC99-BA4B-44EC-9853-7B9818F3B5DE}
