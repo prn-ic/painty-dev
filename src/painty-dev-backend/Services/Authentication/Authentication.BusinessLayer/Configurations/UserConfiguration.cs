@@ -9,7 +9,7 @@ namespace Authentication.BusinessLayer.Configurations
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.Property("PasswordHash");
-            builder.Property("PasswordSalt");
+            builder.Property("PasswordSalt"); 
             builder.HasOne(o => o.Role);
         }
     }

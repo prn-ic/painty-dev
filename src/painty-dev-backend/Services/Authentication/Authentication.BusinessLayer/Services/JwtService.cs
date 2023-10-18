@@ -51,6 +51,7 @@ namespace Authentication.BusinessLayer.Services
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id!.ToString()),
                 new Claim(ClaimTypes.Name, user.Name!),
+                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role!.Name!),
                 new Claim(ClaimTypes.Version, "access")
             };
 
@@ -63,7 +64,6 @@ namespace Authentication.BusinessLayer.Services
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id!.ToString()),
                 new Claim(ClaimTypes.Name, user.Name!),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role!.Name!),
                 new Claim(ClaimTypes.Version, "refresh")
             };
 

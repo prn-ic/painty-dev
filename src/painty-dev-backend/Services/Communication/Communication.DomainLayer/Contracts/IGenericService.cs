@@ -5,6 +5,7 @@ namespace Communication.DomainLayer.Contracts
     public interface IGenericService<T>
     {
         Task<ICollection<T>> GetAsync();
+        Task<ICollection<T>> GetAsync(params Expression<Func<T, object>>[] includeList);
         Task<T?> GetAsync(Expression<Func<T, bool>> expression,
             params Expression<Func<T, object>>[] expressionList);
         Task<T?> GetAsync(Guid id);

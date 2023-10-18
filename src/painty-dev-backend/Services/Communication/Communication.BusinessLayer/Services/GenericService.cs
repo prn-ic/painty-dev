@@ -2,6 +2,7 @@
 using Communication.DomainLayer.Contracts;
 using Communication.DomainLayer.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using System.Linq.Expressions;
 
 namespace Communication.BusinessLayer.Services
@@ -30,7 +31,13 @@ namespace Communication.BusinessLayer.Services
             await _context.SaveChangesAsync();
         }
 
-        public async Task<ICollection<T>> GetAsync() => await _context.Set<T>().ToListAsync();
+        public virtual async Task<ICollection<T>> GetAsync() => await _context.Set<T>().ToListAsync();
+        public async Task<ICollection<T>> GetAsync(params Expression<Func<T, object>>[] includeList)
+        {
+            IQueryable<T> query = _context.Set<T>().AsQueryable();
+            foreach (var include in includeList) query = query.Include(include);
+            return await query.ToListAsync();
+        }
 
         public async Task<T?> GetAsync(Expression<Func<T, bool>> expression,
             params Expression<Func<T, object>>[] includeList)

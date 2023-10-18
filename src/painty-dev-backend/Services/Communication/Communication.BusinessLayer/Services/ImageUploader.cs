@@ -9,9 +9,9 @@ namespace Communication.BusinessLayer.Services
         {
             if (fileInfo is null) return false;
             string fullPath = path + filename;
-            CreateFolderIfNotExist(fullPath);
+            CreateFolderIfNotExist(path);
 
-            using FileStream fileStream = new FileStream(path, FileMode.OpenOrCreate);
+            using FileStream fileStream = new FileStream(fullPath, FileMode.OpenOrCreate);
             
             Task.Run(async () => await fileInfo.CopyToAsync(fileStream)).Wait();
 

@@ -8,6 +8,6 @@ namespace Communication.BusinessLayer.Services
     {
         public ImageService(AppDbContext context) : base(context) { }
         public override async Task<Image?> GetAsync(Guid id) =>
-            await GetAsync(x => x.Id == id, x => x.User!);
+            await GetAsync(x => x.Id == id);
     }
 }

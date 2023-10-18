@@ -2,9 +2,8 @@
 
 namespace Communication.DomainLayer.Dtos
 {
-    public class ImageDto : EntityBase
+    public class ImageDto
     {
         public string? ImagePath { get; set; }
-        public Guid UserId { get; set; }
     }
 }

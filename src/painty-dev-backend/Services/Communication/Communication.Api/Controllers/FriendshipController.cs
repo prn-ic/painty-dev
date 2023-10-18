@@ -17,7 +17,7 @@ namespace Communication.Api.Controllers
             _friendshipService = friendshipService;
 
         [HttpGet("users")]
-        [Authorize(AccessRoles.All)]
+        [Authorize(Roles = AccessRoles.All)]
         public async Task<IActionResult> FindFriends()
         {
             ICollection<User> users = await _friendshipService.FindFriend();
@@ -25,7 +25,7 @@ namespace Communication.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize(AccessRoles.All)]
+        [Authorize(Roles = AccessRoles.All)]
         public async Task<IActionResult> Create(FriendshipDto friendshipDto)
         {
             await _friendshipService.CreateFriendshipAsync(friendshipDto);
@@ -33,7 +33,7 @@ namespace Communication.Api.Controllers
         }
 
         [HttpPut("confirm")]
-        [Authorize(AccessRoles.All)]
+        [Authorize(Roles = AccessRoles.All)]
         public async Task<IActionResult> ConfirmFriendship(FriendshipDto friendshipDto)
         {
             await _friendshipService.ConfirmFriendshipAsync(friendshipDto);

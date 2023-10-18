@@ -32,8 +32,13 @@ namespace Communication.BusinessLayer.Services
 
             if (currentUser is null || friendUser is null) throw new NotFoundException<User>();
 
-            List<Friendship> friendships = currentUser.Friends.Where(f => f.Approved).ToList();
-            if (friendships.Where(f => f.RequestTo!.Equals(friendUser)) is null)
+            List<Friendship> friendships = currentUser.Friends.Where(
+                f => f.Approved && 
+                f.RequestToId == friendId &&
+                f.RequestFromId == userId
+                ).ToList();
+
+            if (friendships.Count <= 0)
                 throw new InvalidDataException<User>();
 
             return friendUser.Images;
@@ -50,18 +55,18 @@ namespace Communication.BusinessLayer.Services
             return images;
         }
 
-        public async Task UploadAsync(IFormFile file, ImageDto imageDto)
+        public async Task UploadAsync(IFormFile file, Guid userId)
         {
-            User? user = await _userService.GetAsync(imageDto.UserId);
+            User? user = await _userService.GetAsync(userId);
             if (user is null) throw new NotFoundException<User>();
 
-            string path = _configuration["Image:UploadPath"]! + imageDto.UserId.ToString() + "/";
-            string filename = imageDto.Id.ToString() + ".jpg";
+            string path = _configuration["Image:UploadPath"]! + userId + "/";
+            string filename = Guid.NewGuid() + ".jpg";
 
             if (!_uploader.Upload(file, path, filename))
                 throw new InternalServerException("The file doesn't load");
 
-            Image image = new Image(imageDto.UserId.ToString() + "/" + filename, user);
+            Image image = new Image(userId + "/" + filename, user);
             await _imageService.CreateAsync(image);
         }
     }

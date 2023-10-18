@@ -10,7 +10,10 @@ namespace Communication.BusinessLayer.Configurations
         {
             builder.Property("PasswordHash");
             builder.Property("PasswordSalt");
-            builder.Property("Images").HasColumnName("_images");
+
+            var navigation = builder.Metadata.FindNavigation(nameof(User.Images));
+
+            navigation.SetPropertyAccessMode(PropertyAccessMode.Field);
             builder.HasOne(o => o.Role);
         }
     }

@@ -2,6 +2,7 @@
 using Cryptography.Cryptors;
 using Cryptography.Models;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Communication.DomainLayer.Entities
 {
@@ -13,9 +14,20 @@ namespace Communication.DomainLayer.Entities
         private string? PasswordSalt { get; set; }
         private UserRole? _role;
         public UserRole? Role => _role;
-        private List<Image> _images = new List<Image>();
+        private readonly List<Image> _images = new List<Image>();
         public IReadOnlyCollection<Image> Images => _images;
-        public List<Friendship> Friends { get; set; } = new List<Friendship>();
+        public List<Friendship> SendToBeFriends { get; set; } = new List<Friendship>();
+        public List<Friendship> ReceiveToBeFriends { get; set; } = new List<Friendship>();
+        [NotMapped]
+        public List<Friendship> Friends
+        {
+            get
+            {
+                var friends = SendToBeFriends.Where(x => x.Approved).ToList();
+                friends.AddRange(ReceiveToBeFriends.Where(x => x.Approved));
+                return friends;
+            }
+        }
 
         private User() { }
         public User(string name, string password, UserRole role)

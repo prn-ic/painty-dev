@@ -8,6 +8,6 @@ namespace Communication.BusinessLayer.Contracts
     {
         Task<IReadOnlyCollection<Image>> GetUserImagesAsync(Guid userId);
         Task<IReadOnlyCollection<Image>> GetFriendImagesAsync(Guid userId, Guid friendId);
-        Task UploadAsync(IFormFile file, ImageDto imageDto);
+        Task UploadAsync(IFormFile file, Guid userId);
     }
 }

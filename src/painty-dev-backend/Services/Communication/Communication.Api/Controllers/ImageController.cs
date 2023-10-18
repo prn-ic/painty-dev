@@ -20,7 +20,7 @@ namespace Communication.Api.Controllers
         public ImageController(IImageBusinessService imageService) => _imageService = imageService;
 
         [HttpGet]
-        [Authorize(AccessRoles.All)]
+        [Authorize(Roles = AccessRoles.All)]
         public async Task<IActionResult> Get()
         {
             IReadOnlyCollection<Image> images = await _imageService.GetUserImagesAsync(UserId);
@@ -28,7 +28,7 @@ namespace Communication.Api.Controllers
         }
 
         [HttpGet("friend/{friendId}")]
-        [Authorize(AccessRoles.All)]
+        [Authorize(Roles = AccessRoles.All)]
         public async Task<IActionResult> Get(Guid friendId)
         {
             IReadOnlyCollection<Image> images = await _imageService.GetFriendImagesAsync(UserId, friendId);
@@ -36,11 +36,11 @@ namespace Communication.Api.Controllers
         }
 
         [HttpPost]
-        [Authorize(AccessRoles.All)]
-        public async Task<IActionResult> Upload(IFormFile file, [FromForm] ImageDto imageDto)
+        [Authorize(Roles = AccessRoles.All)]
+        public async Task<IActionResult> Upload(IFormFile file)
         {
-            await _imageService.UploadAsync(file, imageDto);
-            return CustomResponse.AcceptedResult(imageDto);
+            await _imageService.UploadAsync(file, UserId);
+            return CustomResponse.AcceptedResult();
         }
     }
 }

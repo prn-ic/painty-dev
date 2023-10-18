@@ -1,7 +1,13 @@
-﻿namespace Communication.DomainLayer.Entities
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Communication.DomainLayer.Entities
 {
     public class Friendship : EntityBase
     {
+        [NotMapped]
+        public Guid RequestFromId { get; set; }
+        [NotMapped]
+        public Guid RequestToId { get; set; }
         public User? RequestFrom { get; set; }
         public User? RequestTo { get; set; }
         public bool Approved { get; set; }
