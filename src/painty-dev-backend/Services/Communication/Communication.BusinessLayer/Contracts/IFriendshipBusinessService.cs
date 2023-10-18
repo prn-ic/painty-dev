@@ -7,7 +7,7 @@ namespace Communication.BusinessLayer.Contracts
     {
         Task<ICollection<User>> FindFriend();
         Task<Friendship?> GetFriendshipAsync(Guid id);
-        Task CreateFriendshipAsync(FriendsipDto friendshipDto);
-        Task ConfirmFriendshipAsync(FriendsipDto friendshipDto);
+        Task CreateFriendshipAsync(FriendshipDto friendshipDto);
+        Task ConfirmFriendshipAsync(FriendshipDto friendshipDto);
     }
 }

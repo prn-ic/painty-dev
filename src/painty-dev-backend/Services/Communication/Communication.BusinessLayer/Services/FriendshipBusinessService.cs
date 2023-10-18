@@ -17,7 +17,7 @@ namespace Communication.BusinessLayer.Services
             _userService = userService;
         }
 
-        public async Task ConfirmFriendshipAsync(FriendsipDto friendshipDto)
+        public async Task ConfirmFriendshipAsync(FriendshipDto friendshipDto)
         {
             User? currentUser = await _userService.GetAsync(friendshipDto.RequestFromId);
             User? friendUser = await _userService.GetAsync(friendshipDto.RequestToId);
@@ -30,7 +30,7 @@ namespace Communication.BusinessLayer.Services
             await _friendshipService.UpdateAsync(friendship);
         }
 
-        public async Task CreateFriendshipAsync(FriendsipDto friendshipDto)
+        public async Task CreateFriendshipAsync(FriendshipDto friendshipDto)
         {
             User? currentUser = await _userService.GetAsync(friendshipDto.RequestFromId);
             User? friendUser = await _userService.GetAsync(friendshipDto.RequestToId);

@@ -39,6 +39,17 @@ namespace Communication.BusinessLayer.Services
             return friendUser.Images;
         }
 
+        public async Task<IReadOnlyCollection<Image>> GetUserImagesAsync(Guid userId)
+        {
+            User? currentUser = await _userService.GetAsync(userId);
+
+            if (currentUser is null) throw new NotFoundException<User>();
+
+            List<Image> images = currentUser.Images.Where(f => f.User!.Id == userId).ToList();
+
+            return images;
+        }
+
         public async Task UploadAsync(IFormFile file, ImageDto imageDto)
         {
             User? user = await _userService.GetAsync(imageDto.UserId);
