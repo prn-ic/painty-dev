@@ -16,4 +16,4 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the image
-      run: cd .. | cd .. | cd src/painty-dev-backend | docker compose -f docker-compose.yaml build
+      run: ls | cd src/painty-dev-backend | docker compose -f docker-compose.yaml build
