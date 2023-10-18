@@ -53,9 +53,10 @@ builder.Services.AddMassTransit(x =>
 {
     x.SetKebabCaseEndpointNameFormatter();
     x.AddDelayedMessageScheduler();
+
     x.UsingRabbitMq((context, cfg) =>
     {
-        cfg.Host("localhost", "/", h =>
+        cfg.Host(builder.Configuration["RabbitMq:Uri"]!, "/", h =>
         {
             h.Username(builder.Configuration["RabbitMq:UserName"]);
             h.Password(builder.Configuration["RabbitMq:Password"]);
@@ -72,15 +73,18 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
+// In this case, swagger will be open always
+app.UseSwagger();
+app.UseSwaggerUI();
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+using (var Scope = app.Services.CreateScope())
+{
+    var context = Scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    context.Database.Migrate();
+}
 
 app.UseMiddleware<ExceptionHandlerMiddleware>();
 

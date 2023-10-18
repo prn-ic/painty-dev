@@ -6,10 +6,6 @@ logs/
 src/.env
 *.env
 src/*.env
-**/appsettings.json
-appsettings.json
-**/appsettings.Development.json
-appsettings.Development.json
 
 ### DotnetCore ###
 # .NET Core build folders

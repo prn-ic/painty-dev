@@ -33,7 +33,6 @@ namespace Communication.DomainLayer.Entities
         public User(string name, string password, UserRole role)
         {
             Cryptor cryptor = new Cryptor(new Sha256Algorithm());
-            if (password.Length < 6) throw new ArgumentException("Password length must contains more that 6 symbols");
             Name = name;
             KeyPairModel model = (KeyPairModel)cryptor.Crypt(password);
             PasswordHash = model.Key;

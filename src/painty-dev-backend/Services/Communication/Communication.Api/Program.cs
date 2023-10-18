@@ -28,8 +28,8 @@ builder.Services.AddSwaggerGen(c =>
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
-                      Короче пишешь 'Bearer' [пробели] потом свой токен и ничего более.
-                      \r\n\r\Примерчик: 'Bearer tokenyeah'",
+                      пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ 'Bearer' [пїЅпїЅпїЅпїЅпїЅпїЅпїЅ] пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.
+                      \r\n\r\пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ: 'Bearer tokenyeah'",
         Name = "Authorization",
         In = ParameterLocation.Header,
         Type = SecuritySchemeType.ApiKey,
@@ -98,7 +98,7 @@ builder.Services.AddMassTransit(x =>
     x.AddConsumer<AuthCreateModelConsumer>();
     x.UsingRabbitMq((context, cfg) =>
     {
-        cfg.Host("localhost", "/", h =>
+        cfg.Host(builder.Configuration["RabbitMq:Uri"]!, "/", h =>
         {
             h.Username(builder.Configuration["RabbitMq:UserName"]);
             h.Password(builder.Configuration["RabbitMq:Password"]);
@@ -118,13 +118,15 @@ builder.Services.AddAuthorization();
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// In this case, swagger will be open always
+app.UseSwagger();
+app.UseSwaggerUI();
 
-app.UseHttpsRedirection();
+using (var Scope = app.Services.CreateScope())
+{
+    var context = Scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    context.Database.Migrate();
+}
 
 app.UseAuthorization();
 

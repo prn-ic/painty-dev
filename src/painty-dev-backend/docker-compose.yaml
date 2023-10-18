@@ -1,0 +1,55 @@
+version: "3"
+services:
+    rabbit:
+      image: rabbitmq:3.10.7-management
+      hostname: rabbit
+      restart: always
+      container_name: rabbit
+      expose:
+        - "5672"
+        - "15672"
+      volumes:
+        - rabbitmq:/rabbitmq
+      ports:
+        - "15672:15672"
+      
+
+    postgres-dev:
+      image: postgres:13.3
+      hostname: postgres-dev
+      restart: always
+      container_name: postgres-dev
+      env_file:
+        - .env
+      ports:
+        - "5432:80"
+      stdin_open: true
+      tty: true
+      command: postgres -c 'max_connections=20'
+
+    authentication-api:
+      image: authentication-api:dev
+      build:
+        context: .
+        dockerfile: Services/Authentication/Authentication.Api/Dockerfile
+      depends_on:
+        - postgres-dev
+        - rabbit
+      ports:
+        - "6001:80"
+      restart: always
+
+    communication-api:
+      image: communication-api:dev
+      build:
+        context: .
+        dockerfile: Services/Communication/Communication.Api/Dockerfile
+      depends_on:
+        - postgres-dev
+        - rabbit
+      ports:
+        - "9971:80"  
+      restart: always  
+
+volumes:
+  rabbitmq:
