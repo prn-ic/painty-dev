@@ -1,7 +1,7 @@
 # painty-dev
 Тестовое задание Painty. Проект находится по пути /src/painty-dev-backend/, состоит из 2 микросервисов:
-- Сервис авторизации (Authentication)
-- Сервис коммуникации (Communication)
+- Сервис авторизации (Authentication) <code>http://localhost:6001/api/authentication</code>
+- Сервис коммуникации (Communication) <code>http://localhost:9971/api</code>
 - И прочие библиотеки
 
 ## Начало работы 
