@@ -21,8 +21,14 @@ jobs:
             cd src/painty-dev-backend 
             dotnet build
 
-    - name: Build the first dockerfile
+    - name: Build the auth dockerfile
       run: |
             ls
             cd src/painty-dev-backend
             docker build . --file Services/Authentication/Authentication.Api/Dockerfile --tag auth-api:$(date +%s)
+
+    - name: Build the communicate dockerfile
+      run: |
+            ls
+            cd src/painty-dev-backend
+            docker build . --file Services/Communication/Communication.Api/Dockerfile --tag communication-api:$(date +%s)  
