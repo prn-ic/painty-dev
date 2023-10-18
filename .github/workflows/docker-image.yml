@@ -16,7 +16,7 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build the Auth image
-      run: docker build src/painty-dev-backend/Services/Authentication/Authentication.Api . --file src/painty-dev-backend/Services/Authentication/Authentication.Api/Dockerfile --tag authentication-api:$(date +%s)
+      run: docker build src/painty-dev-backend/Services/Authentication/Authentication.Api --file src/painty-dev-backend/Services/Authentication/Authentication.Api/Dockerfile --tag authentication-api:$(date +%s)
       
     - name: Build the Communicate image
       run: docker build src/painty-dev-backend/Services/Communicate/Cummunicate.Api --file src/painty-dev-backend/Services/Communicate/Cummunicate.Api/Dockerfile --tag communicate-api:$(date +%s)
