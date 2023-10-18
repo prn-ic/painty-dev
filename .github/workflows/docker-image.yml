@@ -20,3 +20,9 @@ jobs:
             ls
             cd src/painty-dev-backend 
             dotnet build
+
+    - name: Build the first dockerfile
+      run: |
+            ls
+            cd src/painty-dev-backend/Services/Authentication/Authentication.Api
+            docker build . --file Dockerfile --tag auth-api:$(date +%s)
