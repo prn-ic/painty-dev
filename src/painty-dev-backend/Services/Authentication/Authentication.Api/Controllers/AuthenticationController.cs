@@ -7,7 +7,7 @@ using PaintyDev.Libs.CustomResponseLib;
 
 namespace Authentication.Api.Controllers
 {
-    [Route("api.paintly/v1/auth")]
+    [Route("api.paintly/authentication")]
     [ApiController]
     public class AuthenticationController : ControllerBase
     {

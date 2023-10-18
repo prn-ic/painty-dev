@@ -8,7 +8,7 @@ using PaintyDev.Libs.CustomResponseLib;
 
 namespace Communication.Api.Controllers
 {
-    [Route("api.paintly/friendships")]
+    [Route("api/friendships")]
     [ApiController]
     public class FriendshipController : ControllerBase
     {

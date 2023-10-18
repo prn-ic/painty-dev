@@ -1,8 +1,10 @@
 using Communication.Api.Middlewares;
 using Communication.BusinessLayer.Contracts;
 using Communication.BusinessLayer.Data;
+using Communication.BusinessLayer.MassTransit.Consumers;
 using Communication.BusinessLayer.Services;
 using Communication.DomainLayer.Contracts;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -87,6 +89,30 @@ builder.Services.AddAuthentication(x => {
                 Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]!))
         };
     });
+
+// Add Mass Transit
+builder.Services.AddMassTransit(x =>
+{
+    x.SetKebabCaseEndpointNameFormatter();
+    x.AddDelayedMessageScheduler();
+    x.AddConsumer<AuthCreateModelConsumer>();
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("localhost", "/", h =>
+        {
+            h.Username(builder.Configuration["RabbitMq:UserName"]);
+            h.Password(builder.Configuration["RabbitMq:Password"]);
+        });
+
+        cfg.ReceiveEndpoint(typeof(AuthCreateModelConsumer).Name.ToLower(), endpoint =>
+        {
+            endpoint.ConfigureConsumer<AuthCreateModelConsumer>(context);
+        });
+        cfg.ClearSerialization();
+        cfg.UseRawJsonSerializer();
+        cfg.ConfigureEndpoints(context);
+    });
+});
 
 builder.Services.AddAuthorization();
 

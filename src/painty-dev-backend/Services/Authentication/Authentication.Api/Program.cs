@@ -1,8 +1,10 @@
 using Authentication.Api.Middlewares;
 using Authentication.BusinessLayer.Contracts;
 using Authentication.BusinessLayer.Data;
+using Authentication.BusinessLayer.MassTransit;
 using Authentication.BusinessLayer.Services;
 using Authentication.DomainLayer.Contracts;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -20,6 +22,7 @@ builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IUserRoleService, UserRoleService>();
 builder.Services.AddTransient<IJwtService, JwtService>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
+builder.Services.AddSingleton<PublisherBase>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -44,6 +47,26 @@ builder.Services.AddAuthentication(x => {
                 Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]!))
         };
     });
+
+// Add MassTransit
+builder.Services.AddMassTransit(x =>
+{
+    x.SetKebabCaseEndpointNameFormatter();
+    x.AddDelayedMessageScheduler();
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("localhost", "/", h =>
+        {
+            h.Username(builder.Configuration["RabbitMq:UserName"]);
+            h.Password(builder.Configuration["RabbitMq:Password"]);
+        });
+
+        cfg.ClearSerialization();
+        cfg.Publish<PublisherBase>();
+        cfg.UseRawJsonSerializer();
+        cfg.ConfigureEndpoints(context);
+    });
+});
 
 builder.Services.AddAuthorization();
 

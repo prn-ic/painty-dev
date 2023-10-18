@@ -1,9 +1,11 @@
 ﻿using Authentication.BusinessLayer.Contracts;
 using Authentication.BusinessLayer.Exceptions;
+using Authentication.BusinessLayer.MassTransit;
 using Authentication.BusinessLayer.Models;
 using Authentication.DomainLayer.Contracts;
 using Authentication.DomainLayer.Dtos;
 using Authentication.DomainLayer.Entities;
+using EventBus.Entities.Users;
 using System.Security.Claims;
 
 namespace Authentication.BusinessLayer.Services
@@ -13,12 +15,15 @@ namespace Authentication.BusinessLayer.Services
         private readonly IUserService _userService;
         private readonly IUserRoleService _userRoleService;
         private readonly IJwtService _jwtService;
+        private readonly PublisherBase _publisher;
 
-        public AuthenticationService(IUserService userService, IJwtService jwtService, IUserRoleService userRoleService)
+        public AuthenticationService(IUserService userService, IJwtService jwtService,
+            IUserRoleService userRoleService, PublisherBase publisher)
         {
             _userService = userService;
             _userRoleService = userRoleService;
             _jwtService = jwtService;
+            _publisher = publisher;
         }
         public async Task<TokenModel> RefreshAsync(string token)
         {
@@ -58,6 +63,12 @@ namespace Authentication.BusinessLayer.Services
             User user = new User(userDto.Name, userDto.Password, role!);
             await _userService.CreateAsync(user);
 
+            AuthCreateModel model = new AuthCreateModel();
+            model.Id = user.Id;
+            model.Name = user.Name;
+            model.RoleName = role!.Name;
+
+            await _publisher.Send(model);
             // Generate a confirmation token 
             return _jwtService.CreateTokenPair(user);
         }
