@@ -1,0 +1,34 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "dev" ]
+  
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the solution
+      run: |
+            ls
+            cd src/painty-dev-backend 
+            dotnet build
+
+    - name: Build the auth dockerfile
+      run: |
+            ls
+            cd src/painty-dev-backend
+            docker build . --file Services/Authentication/Authentication.Api/Dockerfile --tag auth-api:$(date +%s)
+
+    - name: Build the communicate dockerfile
+      run: |
+            ls
+            cd src/painty-dev-backend
+            docker build . --file Services/Communication/Communication.Api/Dockerfile --tag communication-api:$(date +%s)  
